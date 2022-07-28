@@ -1,4 +1,5 @@
 const image = document.querySelector("img");
+const video = document.querySelector("video");
 const title = document.getElementById("title");
 const artist = document.getElementById("artist");
 const music = document.querySelector("audio");
@@ -9,7 +10,9 @@ const durationEl = document.getElementById("duration");
 const prevBtn = document.getElementById("prev");
 const playBtn = document.getElementById("play");
 const nextBtn = document.getElementById("next");
-
+const volumeIcon = document.getElementById("volume-icon");
+const volumeRange = document.querySelector(".volume-range");
+const volumeBar = document.querySelector(".volume-bar");
 //Music
 const songs = [
     {
@@ -41,7 +44,12 @@ function playSong() {
     isPlaying = true;
     playBtn.classList.replace("fa-play", "fa-pause");
     playBtn.setAttribute("title", "Pause");
+
     music.play();
+    setTimeout(function () {
+        ImgToVideo();
+        //console.log("I will run after 3 seconds");
+    }, 3000);
 }
 
 // Pause
@@ -50,8 +58,32 @@ function pauseSong() {
     playBtn.classList.replace("fa-pause", "fa-play");
     playBtn.setAttribute("title", "Play");
     music.pause();
+    videoToImg();
 }
 
+// immage chane video
+const ImgToVideo = () => {
+    image.hidden = true;
+    video.hidden = false;
+    if (isPlaying) {
+        video.play();
+    } else {
+        video.pause();
+    }
+
+    // When the 'ended' event fires
+    video.addEventListener("ended", function () {
+        // Reset the video to 0
+        video.currentTime = 0;
+        // And play again
+        video.play();
+    });
+};
+
+function videoToImg() {
+    video.hidden = true;
+    image.hidden = false;
+}
 // Play or Pause Event Listener
 playBtn.addEventListener("click", () => (isPlaying ? pauseSong() : playSong()));
 
@@ -76,6 +108,7 @@ function nextSong() {
         songIndex = 0;
     }
     loadSong(songs[songIndex]);
+    videoToImg();
     playSong();
 }
 
@@ -85,6 +118,7 @@ function prevSong() {
         songIndex = songs.length - 1;
     }
     loadSong(songs[songIndex]);
+    videoToImg();
     playSong();
 }
 
@@ -136,10 +170,59 @@ function setProgressBar(e) {
     music.currentTime = (clickX / width) * duration;
 }
 
+// Volume Controls --------------------------- //
+
+let lastVolume = 1;
+
+//volume Bar
+function changeVolume(e) {
+    let volume = e.offsetX / volumeRange.offsetWidth;
+    // rounding volume up or down
+    if (volume < 0.1) {
+        volume = 0;
+    }
+    if (volume > 0.9) {
+        volume = 1;
+    }
+    volumeBar.style.width = `${volume * 100}%`;
+    music.volume = volume;
+    console.log(volume);
+    //Change icon dependig on volume
+    volumeIcon.className = "";
+    if (volume > 0.7) {
+        volumeIcon.classList.add("fa-solid", "fa-volume-up");
+    } else if (volume < 0.7 && volume > 0) {
+        volumeIcon.classList.add("fa-solid", "fa-volume-down");
+    } else if (volume === 0) {
+        volumeIcon.classList.add("fa-solid", "fa-volume-off");
+    }
+    lastVolume = volume;
+}
+
+//Mute/Unmute
+function toggleMute() {
+    volumeIcon.className = "";
+    if (music.volume) {
+        lastVolume = music.volume;
+        music.volume = 0;
+        volumeBar.style.width = 0;
+        console.log();
+        volumeIcon.classList.add("fa-solid", "fa-volume-mute");
+        volumeIcon.setAttribute("title", "Unmute");
+    } else {
+        music.volume = lastVolume;
+        volumeBar.style.width = `${lastVolume * 100}%`;
+        volumeIcon.classList.add("fa-solid", "fa-volume-up");
+        volumeIcon.setAttribute("title", "Mute");
+    }
+}
+
 nextBtn.addEventListener("click", nextSong);
 prevBtn.addEventListener("click", prevSong);
 music.addEventListener("ended", nextSong);
 music.addEventListener("timeupdate", updateprogressBar);
 progressContainer.addEventListener("click", setProgressBar);
-
-// TODO volume
+volumeRange.addEventListener("click", changeVolume);
+volumeIcon.addEventListener("click", toggleMute);
+image.addEventListener("click", ImgToVideo);
+video.addEventListener("click", videoToImg);

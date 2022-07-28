@@ -1,6 +1,8 @@
 /* Images created by: https://unsplash.com/@pawel_czerwinski */
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap');
 
+
+
 html {
   box-sizing: border-box;
 }
@@ -32,12 +34,13 @@ body {
   left: 50px;
 }
 
-.img-container img {
+.img-container img, video {
   height: 100%;
   width: 100%;
   object-fit: cover;
   border-radius: 20px;
   box-shadow: 0 5px 30px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 
 h2 {
@@ -71,12 +74,15 @@ h3 {
   transition: width 0.1s linear;
 }
 
+
 .duration-wrapper {
   position: relative;
   top: -25px;
   display: flex;
   justify-content: space-between;
 }
+
+
 
 /* Controls */
 .player-controls {
@@ -103,6 +109,38 @@ h3 {
   position: relative;
   top: 3px;
 }
+
+/* Volume */
+
+.volume-icon {
+  cursor: pointer;
+ 
+}
+
+.volume-range {
+  
+  height: 8px;
+  width: 100px;
+  background: white;
+  border-radius: 10px;
+  position: relative;
+  top: -21px;
+  left: 50px;
+  cursor: pointer;
+}
+
+.volume-bar {
+  background: rgba(70, 70, 70, 0.5);
+  width: 50%;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.2s ease-in;
+}
+
+.volume-bar:hover {
+  background: var(--primary-color);
+}
+
 
 /* Media Query: iPhone (Vertical) */
 @media screen and (max-width: 376px) {

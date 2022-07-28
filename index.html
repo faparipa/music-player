@@ -16,6 +16,7 @@
             <!-- Song -->
             <div class="img-container">
                 <img src="img/jacinto-1.jpg" alt="Album Art" />
+                <video src="Tunnel.mp4" hidden></video>
             </div>
             <h2 id="title">Electric Chill Machine</h2>
             <h3 id="artist">Jacinto</h3>
@@ -24,8 +25,8 @@
             <div class="progress-container" id="progress-container">
                 <div class="progress" id="progress"></div>
                 <div class="duration-wrapper">
-                    <span id="current-time">0:00</span>
-                    <span id="duration">2:05</span>
+                    <span id="current-time"></span>
+                    <span id="duration"></span>
                 </div>
             </div>
             <!-- Controls -->
@@ -37,6 +38,21 @@
                     title="Play"
                 ></i>
                 <i class="fa-solid fa-forward" id="next" title="Next"></i>
+
+                <!-- volume -->
+                
+                    
+                        <i
+                            class="fa-solid fa-volume-up"
+                            title="Mute"
+                            id="volume-icon"
+                        ></i>
+                    
+                    <div class="volume-range" title="Change Volume">
+                        <div class="volume-bar"></div>
+                    </div>
+                
+            </div>
             </div>
         </div>
 
